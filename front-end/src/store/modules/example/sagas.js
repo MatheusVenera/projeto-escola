@@ -1,12 +1,13 @@
 import { call, put, all, takeLatest } from 'redux-saga/effects'
 import * as actions from './actions'
 import * as types from '../types'
+import axios from 'axios'
+export const requisicao = async function getData() {
+    const response = await axios.get('http://localhost:3001/users/listarUsuarios');
+    if(response.data) return response.data;
+    return 'Nenhum usuário cadastrado';
+}
 
-const requisicao = () => new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve();
-    }, 2000)
-})
 
 function* exampleRequest() {
     try {

@@ -1,8 +1,10 @@
 import * as types from '../types'
 import { toast } from 'react-toastify';
+import { requisicao } from './sagas'
 
 const inicialState = {
     botaoClicado: false,
+    resultados: ''
 }
 
 export default function(state = inicialState, action) {
@@ -11,6 +13,7 @@ export default function(state = inicialState, action) {
             toast.success('Dados salvos com sucesso!')
             const newState = {...state};
             newState.botaoClicado = !newState.botaoClicado;
+            newState.resultados = requisicao;
             return newState;
         }
 
