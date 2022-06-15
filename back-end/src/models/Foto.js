@@ -23,9 +23,12 @@ export default class Foto extends Model {
         },
       },
       url: {
-        type: Sequelize.VIRTUAL,
-        get() {
-          return `${appConfig.url}/images/${this.getDataValue('filename')}`;
+        type: Sequelize.STRING,
+        defaultValue: '',
+        validate: {
+          notEmpty: {
+            msg: 'Campo não pode ficar vazio',
+          },
         },
       },
     }, {
