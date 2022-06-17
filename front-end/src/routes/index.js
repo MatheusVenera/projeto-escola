@@ -8,12 +8,14 @@ import Aluno from '../pages/Aluno';
 import Fotos from '../pages/Fotos';
 import Register from '../pages/Register';
 import Page404 from '../pages/Page404';
+import LandingPage from '../pages/LandingPage';
 
 
 export default function Routes() {
     return (
             <Switch>
-                <MyRoute exact path='/' component={Alunos} isClosed={false} />
+                <MyRoute exact path='/' component={LandingPage} isClosed={false} />
+                <MyRoute exact path='/alunos' component={Alunos} isClosed />
                 <MyRoute exact path='/aluno/:id/edit' component={Aluno} isClosed />
                 <MyRoute exact path='/aluno/:id/update' component={Aluno} isClosed />
                 <MyRoute exact path='/aluno/:id/delete' component={Aluno} isClosed />

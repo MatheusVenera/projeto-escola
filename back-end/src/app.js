@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import { resolve } from 'path';
+import delay from 'express-delay';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ class App {
   middlewares() {
     this.app.use(cors());
     // this.app.use(helmet());
+    this.app.use(delay(2000));
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
     this.app.use(express.static(resolve(__dirname, 'uploads')));

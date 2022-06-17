@@ -5,22 +5,43 @@ import { FaUserCircle, FaEdit } from 'react-icons/fa'
 import { AiFillDelete } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import axios from "../../services/axios";
-import history from '../../services/history';
 import { Container } from "../../styles/GlobalStyles";
 import { AlunoContainer, ImageAluno, Tbody, ActionsButtons } from "./styled";
+import { toast } from 'react-toastify';
 
 export default function Alunos() {
   const [alunos, setAlunos] = useState([]);
 
   useEffect(() => {
+    const toastCarregando = toast.loading('Carregando dados...');
     async function getData() {
-      const response = await axios.get("/alunos/listAlunos");
-      setAlunos(response.data);
-    }
+      try {
+        const response = await axios.get("/alunos/listAlunos");
+        setTimeout(() => {
+          setAlunos(response.data);
+          toast.update(toastCarregando, { render: 'Dados carregados com sucesso!',
+          type: 'success',
+          isLoading: false,
+          closeButton: true,
+          closeOnClick: true,
+          autoClose: 3000,
+        })
+        }, 3000)
+      } catch (error) {
+          setTimeout(() => {
+            toast.update(toastCarregando, { render: `Erro ao carregar os dados :-( ${error.message}`,
+            type: 'error',
+            isLoading: false,
+            closeButton: true,
+            closeOnClick: true,
+            autoClose: 3000,
+            })
+          }, 100)
+      }
+  }
     getData();
   }, []);
   return (
-    console.log(history),
     <>
       <Container>
         <h1>Alunos</h1>
