@@ -85,6 +85,7 @@ export default function Register() {
               autoClose: 3000,
             });
           }
+          setDisabled(false);
         }, 100);
       }
     }

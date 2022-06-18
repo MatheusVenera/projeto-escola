@@ -6,35 +6,25 @@ import { toast } from "react-toastify";
 import { get } from "lodash";
 import { isEmail } from "validator";
 import * as actions from '../../store/modules/auth/actions'
-import { useDispatch } from 'react-redux'
-import axios from "../../services/axios";
-import history from "../../services/history";
+import { useDispatch, useSelector } from 'react-redux'
+
 
 export default function Login(props) {
   const dispatch = useDispatch();
-
   const prevPath = get(props, 'location.state.prevPath', '/');
-  const [textButton, setTextButton] = useState("")
-  const [disabled, setDisabled] = useState("")
+  const isLoading = useSelector(state => state.auth.isLoading);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  //Email e senha ! vazio
-  //Email precisa ser email e tem que ser entre 3 e 255 caracteres
-  //Senha tem que ter entre 6 e 255 caracteres
   const formErrors = [];
+  console.log(isLoading)
   async function handleSubmit(e) {
     e.preventDefault();
+    console.log(isLoading)
 
     validateInputs();
 
     if (formErrors.length > 0) {
-      setDisabled(true);
-      setTextButton("Aguarde...")
-      setTimeout(() => {
-        setDisabled(false);
-        setTextButton("Criar conta")
-      }, 1000);
       toast.dismiss();
       toast.clearWaitingQueue();
       formErrors.forEach((erro) => {
@@ -42,8 +32,6 @@ export default function Login(props) {
       });
       return;
     } else {
-      setDisabled(true);
-      console.log(disabled)
       dispatch(actions.LoginRequest({ email, password, prevPath }))
     }
   }
@@ -105,8 +93,8 @@ export default function Login(props) {
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
-          <Button disabled={disabled} variant="danger" type="submit">
-            {textButton ? textButton : "Fazer Login"}
+          <Button disabled={isLoading} variant="danger" type="submit">
+            {isLoading ? "Aguarde..." : "Fazer Login"}
           </Button>
         </Form>
       </ContainerForm>
