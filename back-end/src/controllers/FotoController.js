@@ -14,16 +14,23 @@ class FotoController {
         });
       }
       try {
-        const { originalname, filename } = req.file;
-        const { aluno_id } = req.body;
-        const url = `${appConfig.url}/${filename}`.replace(/\\/g, '/');
-        const foto = await Foto.create({
-          originalname, filename, aluno_id, url,
-        });
-        return res.json(foto);
+        if (req.file) {
+          const { originalname, filename } = req.file;
+          const { aluno_id } = req.body;
+          const url = `${appConfig.url}/${filename}`.replace(/\\/g, '/');
+          const foto = await Foto.create({
+            originalname, filename, aluno_id, url,
+          });
+          return res.json(foto);
+        } else {
+          return res.status(400).json({
+            errors: ['Você precisa enviar uma foto'],
+          });
+        }
+
       } catch (e) {
         return res.status(400).json({
-          errors: ['Aluno não existe '],
+          errors: ['Aluno não existe'],
         });
       }
     });
