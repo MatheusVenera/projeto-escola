@@ -17,10 +17,9 @@ export default function Login(props) {
   const [password, setPassword] = useState("");
 
   const formErrors = [];
-  console.log(isLoading)
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log(isLoading)
+
 
     validateInputs();
 
@@ -39,7 +38,6 @@ export default function Login(props) {
   function validateInputs() {
     if (email === "" || password === "") {
       if (formErrors.length > 0) {
-        console.log(formErrors)
         const novoErro = "Todos os campos precisam ser preenchidos!";
         if (!formErrors.find(element => element === "Todos os campos precisam ser preenchidos!")) {
           formErrors.push(novoErro);

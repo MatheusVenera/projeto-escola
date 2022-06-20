@@ -26,8 +26,25 @@ export default function(state = initialState, action) {
         }
         case types.LOGIN_FAILURE: {
             delete axios.defaults.headers.Authorization;
+            const newState = { ...initialState }
+            return newState;
+        }
+        case types.REGISTER_REQUEST: {
+            const newState = {...state}
+            newState.isLoading = true;
+            return newState;
+        }
+        case types.REGISTER_FAILURE: {
             const newState = {...state}
             newState.isLoading = false;
+            return newState;
+        }
+        case types.REGISTER_SUCCESS: {
+            const newState = {...state}
+            newState.isLoggedIn = true;
+            newState.isLoading = false;
+            newState.user.nome = action.payload.nome
+            newState.user.email = action.payload.email
             return newState;
         }
         default: {

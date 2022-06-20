@@ -1,19 +1,32 @@
 import React, { useState } from "react";
-import { ContainerForm } from "./styled";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { toast } from "react-toastify";
-import { get } from "lodash";
+import { useSelector, useDispatch } from 'react-redux';
 import { isEmail } from "validator";
-import axios from "../../services/axios";
-import history from "../../services/history";
+import { get } from 'lodash'
+import * as actions from '../../store/modules/auth/actions'
+import { ContainerForm } from "./styled";
 
-export default function Register() {
+export default function Register(props) {
+  const id = useSelector(state => state.auth.user.id);
+  const nomeStored = useSelector(state => state.auth.user.nome);
+  const emailStored = useSelector(state => state.auth.user.email);
+
+  const dispatch = useDispatch();
+
+  const prevPath = get(props, 'location.state.prevPath', '/');
+  const isLoading = useSelector(state => state.auth.isLoading);
   const [textButton, setTextButton] = useState("")
-  const [disabled, setDisabled] = useState("")
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  React.useEffect(() => {
+    if (!id) return;
+    setNome(nomeStored)
+    setEmail(emailStored)
+  }, [emailStored, id, nomeStored])
 
   const formErrors = [];
   async function handleSubmit(e) {
@@ -21,12 +34,6 @@ export default function Register() {
     validateInputs();
 
     if (formErrors.length > 0) {
-      setDisabled(true);
-      setTextButton("Aguarde...")
-      setTimeout(() => {
-        setDisabled(false);
-        setTextButton("Criar conta")
-      }, 1000);
       toast.dismiss();
       toast.clearWaitingQueue();
       formErrors.forEach((erro) => {
@@ -34,65 +41,12 @@ export default function Register() {
       });
       return;
     } else {
-      const toastEnviando = toast.loading("Enviando dados...");
-      try {
-        setDisabled(true);
-        await axios.post("/users/criarUsuario", {
-          nome,
-          password,
-          email,
-        });
-        toast.update(toastEnviando, {
-          render: "Cadastro realizado com sucesso!",
-          type: "success",
-          isLoading: false,
-          closeButton: true,
-          closeOnClick: true,
-          draggable: true,
-          autoClose: 3000,
-        });
-        const toastRedirecionando = toast.loading("Você será redirecionado...", {
-          closeButton: false,
-          closeOnClick: false,
-          draggable: false,
-        });
-        setTimeout(() => {
-          toast.dismiss(toastRedirecionando);
-          history.push("/login");
-        }, 3000)
-      } catch (e) {
-        setTimeout(() => {
-          const errors = get(e, "response.data.errors", []);
-          if (errors.length > 0) {
-            errors.map((err) => {
-              toast.update(toastEnviando, {
-                render: `${err}`,
-                type: "error",
-                isLoading: false,
-                closeButton: true,
-                closeOnClick: true,
-                draggable: true,
-                autoClose: 3000,
-              });
-            });
-          } else {
-            toast.update(toastEnviando, {
-              render: `Erro ao cadastrar seus dados :( ${e.response.status} ${e.response.statusText}`,
-              type: "error",
-              isLoading: false,
-              closeButton: true,
-              closeOnClick: true,
-              autoClose: 3000,
-            });
-          }
-          setDisabled(false);
-        }, 100);
-      }
+      dispatch(actions.registerRequest({ nome, email, password, id, prevPath, emailStored}))
     }
   }
 
   function validateInputs() {
-    if (nome === "" || email === "" || password === "") {
+    if (!id && (nome === "" || email === "" || password === "")) {
       if (formErrors.length > 0) {
         const novoErro = "Todos os campos precisam ser preenchidos!";
         if (!formErrors.find(element => element === "Todos os campos precisam ser preenchidos!")) {
@@ -110,7 +64,7 @@ export default function Register() {
       return;
     }
 
-    if (password.length < 6 || password.length > 255) {
+    if (!id && (password.length < 6 || password.length > 255)) {
       formErrors.push(
         "A senha precisa ter entre 6 e 255 caracteres, inclusos."
       );
@@ -121,7 +75,7 @@ export default function Register() {
   return (
     <>
       <ContainerForm>
-        <h1>Crie sua conta</h1>
+        <h1>{id ? "Edite sua conta" : "Crie sua conta"}</h1>
 
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="Name">
@@ -144,7 +98,7 @@ export default function Register() {
               onChange={(e) => setEmail(e.target.value)}
             />
             <Form.Text className="text-muted">
-              Nós nunca compartilharemos seu email com ninguém.
+              {id ? 'Caso altere o email, você precisará fazer login novamente.' : ''}
             </Form.Text>
           </Form.Group>
 
@@ -156,9 +110,12 @@ export default function Register() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            <Form.Text className="text-muted">
+              {id ? 'Caso altere a senha, você precisará fazer login novamente.' : ''}
+            </Form.Text>
           </Form.Group>
-          <Button disabled={disabled} variant="danger" type="submit">
-            {textButton ? textButton : "Criar conta"}
+          <Button disabled={isLoading} variant="danger" type="submit">
+            {isLoading ? 'Aguarde...' : (id ? "Editar conta" : "Criar conta")}
           </Button>
         </Form>
       </ContainerForm>

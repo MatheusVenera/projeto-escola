@@ -11,7 +11,7 @@ export const Nav = styled.nav`
 
     a {
         color: #fff;
-        margin: 0 10px 0 0;
+        margin: 0 10px;
         font-weight: bold;
     }
 `;
