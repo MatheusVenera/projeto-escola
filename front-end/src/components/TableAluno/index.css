@@ -1,0 +1,24 @@
+.nav-search {
+    background-color: white !important;
+}
+
+.btn-order:hover {
+    background-color: #eee;
+}
+
+.btn-refresh {
+    animation: rotation .7s infinite linear;
+}
+
+.true {
+    animation: rotation .7s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
