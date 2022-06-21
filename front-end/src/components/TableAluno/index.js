@@ -75,8 +75,8 @@ export default function TableAluno() {
                                     <td><a href={`mailto:${aluno.email}`}>{aluno.email}</a></td>
                                     <td>
                                         <ActionsButtons>
-                                            <Link to={`/aluno/${aluno.id}/edit`}><FaEdit /></Link>
-                                            <Link to={`/aluno/${aluno.id}/delete`}><AiFillDelete /></Link>
+                                            <Link to={`/aluno/editAluno/${aluno.id}`}><FaEdit /></Link>
+                                            <Link onClick={() => {console.log(aluno.id)}}><AiFillDelete /></Link>
                                         </ActionsButtons>
                                     </td>
                                 </tr>

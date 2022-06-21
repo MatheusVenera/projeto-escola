@@ -1,0 +1,15 @@
+.navbar {
+    background-color: #C3073F !important;
+}
+
+.linkDropdown {
+    color: black;
+}
+
+.linkNav {
+    color: #dedede !important;
+}
+
+.linkNav:hover {
+    color: white !important;
+}

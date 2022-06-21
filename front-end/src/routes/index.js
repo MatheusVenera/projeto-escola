@@ -16,11 +16,10 @@ export default function Routes() {
             <Switch>
                 <MyRoute exact path='/' component={LandingPage} isClosed={false} />
                 <MyRoute exact path='/alunos' component={Alunos} isClosed />
-                <MyRoute exact path='/aluno/:id/edit' component={Aluno} isClosed />
-                <MyRoute exact path='/aluno/:id/update' component={Aluno} isClosed />
-                <MyRoute exact path='/aluno/:id/delete' component={Aluno} isClosed />
-                <MyRoute exact path='/aluno/' component={Aluno} isClosed />
-                <MyRoute exact path='/fotos/:id' component={Fotos} isClosed />
+                <MyRoute exact path='/aluno/createAluno' component={Alunos} isClosed />
+                <MyRoute exact path='/aluno/editAluno/:id' component={Aluno} isClosed />
+                <MyRoute exact path='/aluno/findAluno' component={Aluno} isClosed />
+                <MyRoute exact path='/fotos/send' component={Fotos} isClosed />
                 <MyRoute exact path='/login/' component={Login} isClosed={false} />
                 <MyRoute exact path='/register/' component={Register} isClosed={false} />
                 <MyRoute path='*' component={Page404} />
