@@ -239,7 +239,7 @@ export default function TableAluno() {
                                 setClassBtnRefresh("");
                             }} size={40} className={classBtnRefresh}/>
                         </Link>
-                        <Link to={`/aluno/createAluno`}><FaPlusCircle size={33} /></Link>
+                        <Link to={`/aluno/`}><FaPlusCircle size={33} /></Link>
                         <Nav
                             className="me-auto my-2 my-lg-0"
                             style={{ maxHeight: "100px" }}
@@ -308,7 +308,7 @@ export default function TableAluno() {
                                     <td><a href={`mailto:${aluno.email}`}>{aluno.email}</a></td>
                                     <td>
                                         <ActionsButtons>
-                                            <Link to={`/aluno/editAluno/${aluno.id}`}><FaEdit /></Link>
+                                            <Link to={`/aluno/${aluno.id}`}><FaEdit /></Link>
                                             {!confirm ? (
                                                 <Link to="/alunos" onClick={() => deleteAluno(aluno.id)}><AiFillDelete /></Link>
                                             ) : (
