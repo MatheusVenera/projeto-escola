@@ -1,6 +1,5 @@
 import * as types from '../types'
-import { toast } from 'react-toastify';
-import { requisicao } from './sagas'
+
 
 const inicialState = {
     isLoading: false,
@@ -9,7 +8,7 @@ const inicialState = {
 export default function(state = inicialState, action) {
     switch (action.type) {
         case types.CADASTRO_ALUNO_REQUEST: {
-            const newState = {...state}
+            const newState = {...state};
             newState.isLoading = true;
             return newState;
         }

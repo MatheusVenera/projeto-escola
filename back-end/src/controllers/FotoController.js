@@ -22,12 +22,10 @@ class FotoController {
             originalname, filename, aluno_id, url,
           });
           return res.json(foto);
-        } else {
-          return res.status(400).json({
-            errors: ['Você precisa enviar uma foto'],
-          });
         }
-
+        return res.status(400).json({
+          errors: ['Você precisa enviar uma foto'],
+        });
       } catch (e) {
         return res.status(400).json({
           errors: ['Aluno não existe'],

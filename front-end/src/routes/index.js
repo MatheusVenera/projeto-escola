@@ -9,6 +9,7 @@ import Fotos from '../pages/Fotos';
 import Register from '../pages/Register';
 import Page404 from '../pages/Page404';
 import LandingPage from '../pages/LandingPage';
+import SendFoto from '../components/SendFoto';
 
 
 export default function Routes() {
@@ -22,6 +23,7 @@ export default function Routes() {
                 <MyRoute exact path='/fotos/:id' component={Fotos} isClosed />
                 <MyRoute exact path='/login/' component={Login} isClosed={false} />
                 <MyRoute exact path='/register/' component={Register} isClosed={false} />
+                <MyRoute exact path='/sendFoto' component={SendFoto} isClosed={false} />
                 <MyRoute path='*' component={Page404} />
             </Switch>
     );

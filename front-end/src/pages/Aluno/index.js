@@ -16,8 +16,7 @@ export default function Aluno(props) {
   const prevPath = get(props, 'location.state.prevPath', '/');
 
 
-  const isLoading = useSelector(state => state.auth.isLoading);
-  const [textButton, setTextButton] = useState("")
+  const isLoading = useSelector(state => state.aluno.isLoading);
 
 
   const [nome, setNome] = useState("");
@@ -40,6 +39,7 @@ export default function Aluno(props) {
         setIdade(response.data.idade);
         setPeso(response.data.peso);
         setAltura(response.data.altura);
+        console.log(response.data);
         toast.update(toastCarregando, {
           render: 'Dados carregados com sucesso!',
           type: 'success',
@@ -100,7 +100,7 @@ export default function Aluno(props) {
       });
       return;
     } else {
-      if (id){
+      if (id) {
         console.log('update')
       } else {
         dispatch(actions.cadastroAlunoRequest({ nome, email, sobrenome, idade, peso, altura, id, prevPath}))
@@ -176,9 +176,6 @@ export default function Aluno(props) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <Form.Text className="text-muted">
-              {id ? 'Caso altere o email, você precisará fazer login novamente.' : ''}
-            </Form.Text>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="Idade">
