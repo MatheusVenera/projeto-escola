@@ -11,7 +11,7 @@
 }
 
 .userIcon {
-    border: 50%;
+    border-radius: 50%;
     position: relative;
     width: 64px;
     height: 64px;
@@ -30,7 +30,7 @@
     position: relative;
     margin-left: auto;
     margin-right: auto;
-    color: black;
+    color: #C3073F;
     top: calc(-50% + 2px);
     opacity: 0%;
     transition: opacity .3s;

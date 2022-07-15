@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Form, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import { FaUserCircle } from 'react-icons/fa'
+import { GrUploadOption } from 'react-icons/gr'
 import { isEmail, isInt } from 'validator';
 import PropTypes from 'prop-types'
 import { get } from 'lodash';
@@ -9,6 +11,7 @@ import { ContainerForm } from './styled';
 import * as actions from '../../store/modules/aluno/actions'
 import axios from "../../services/axios";
 import history from './../../services/history';
+import './index.css'
 
 export default function Aluno(props) {
   const id = get(props, 'match.params.id', 0);
@@ -17,7 +20,7 @@ export default function Aluno(props) {
 
 
   const isLoading = useSelector(state => state.aluno.isLoading);
-
+  const input = document.querySelector('.input');
 
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
@@ -25,6 +28,7 @@ export default function Aluno(props) {
   const [idade, setIdade] = useState("");
   const [peso, setPeso] = useState("");
   const [altura, setAltura] = useState("");
+  const [foto, setFoto] = useState("");
   const formErrors = [];
 
   useEffect(() => {
@@ -39,7 +43,7 @@ export default function Aluno(props) {
         setIdade(response.data.idade);
         setPeso(response.data.peso);
         setAltura(response.data.altura);
-        console.log(response.data);
+        setFoto(response.data.Fotos[0]);
         toast.update(toastCarregando, {
           render: 'Dados carregados com sucesso!',
           type: 'success',
@@ -88,9 +92,21 @@ export default function Aluno(props) {
     getData();
 
   }, [id]);
+
+  
+  function handleFiles() {
+    const fileList = this.files;
+    if (fileList.length > 0) {
+      const objectURL = window.URL.createObjectURL(fileList[0]);
+      console.log(objectURL)
+      setFoto(objectURL);
+    }
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     validateInputs();
+    console.log(input.files)
 
     if (formErrors.length > 0) {
       toast.dismiss();
@@ -139,11 +155,22 @@ export default function Aluno(props) {
     setAltura(Number.parseFloat(altura));
 
   }
+
+  function sendFoto() {
+    input.addEventListener("change", handleFiles, false);
+    input.click();
+  }
   
   return (
     <>
       <ContainerForm>
         <h1>{id ? "Editar aluno" : "Cadastrar aluno"}</h1>
+
+        <div className="main">
+            { foto ? <img className="userIcon" src={`http://127.0.0.1:8887/${foto.filename}`}></img>: <FaUserCircle className="userIcon"/>}
+            <GrUploadOption className="addIcon" onClick={sendFoto}/>
+            <input type="file" accept="image/png, image/jpeg" className="input"></input>
+        </div>
 
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="Nome">
