@@ -97,9 +97,13 @@ export default function Aluno(props) {
   function handleFiles() {
     const fileList = this.files;
     if (fileList.length > 0) {
-      const objectURL = window.URL.createObjectURL(fileList[0]);
-      console.log(objectURL)
-      setFoto(objectURL);
+      const inputFile = document.querySelector('.userIcon');
+      const reader = new FileReader();
+
+      reader.onload = e => inputFile.src = e.target.result;
+
+      reader.readAsDataURL(fileList[0]);
+
     }
   }
 
