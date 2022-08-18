@@ -3,7 +3,7 @@ import multerConfig from '../config/multerConfig';
 import appConfig from '../config/appConfig';
 import Foto from '../models/Foto';
 
-const upload = multer(multerConfig).single('arquivo');
+const upload = multer(multerConfig).single('foto');
 
 class FotoController {
   save(req, res) {
@@ -17,6 +17,7 @@ class FotoController {
         if (req.file) {
           const { originalname, filename } = req.file;
           const { aluno_id } = req.body;
+          console.log(aluno_id);
           const url = `${appConfig.url}/${filename}`.replace(/\\/g, '/');
           const foto = await Foto.create({
             originalname, filename, aluno_id, url,

@@ -10,6 +10,9 @@ function* cadastroAlunoRequest({ payload }) {
     const toastEnviando = toast.loading("Enviando dados...");
     try {
         const response = yield call(axios.post, `/alunos/createAluno`, payload);
+        if (payload.foto) {
+            yield call(axios.post, `/fotos/save`, ({aluno_id: response.data.id, foto: payload.foto}), {headers: {'Content-Type': 'multipart/form-data'}});
+        }
         yield put(actions.cadastroAlunoSuccess({ ...response.data }))
         toast.update(toastEnviando, {
             render: "Cadastro realizado com sucesso!",

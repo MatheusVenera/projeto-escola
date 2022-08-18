@@ -20,7 +20,6 @@ export default function Aluno(props) {
 
 
   const isLoading = useSelector(state => state.aluno.isLoading);
-  const input = document.querySelector('.input');
 
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
@@ -97,10 +96,10 @@ export default function Aluno(props) {
   function handleFiles() {
     const fileList = this.files;
     if (fileList.length > 0) {
-      const inputFile = document.querySelector('.userIcon');
+      setFoto(fileList[0]);
       const reader = new FileReader();
 
-      reader.onload = e => inputFile.src = e.target.result;
+      reader.onload = e => document.querySelector('.userIcon').src = e.target.result;
 
       reader.readAsDataURL(fileList[0]);
 
@@ -110,7 +109,6 @@ export default function Aluno(props) {
   async function handleSubmit(e) {
     e.preventDefault();
     validateInputs();
-    console.log(input.files)
 
     if (formErrors.length > 0) {
       toast.dismiss();
@@ -123,7 +121,7 @@ export default function Aluno(props) {
       if (id) {
         console.log('update')
       } else {
-        dispatch(actions.cadastroAlunoRequest({ nome, email, sobrenome, idade, peso, altura, id, prevPath}))
+        dispatch(actions.cadastroAlunoRequest({ nome, email, sobrenome, idade, peso, altura, id, foto, prevPath}))
       }
     }
   }
@@ -161,6 +159,7 @@ export default function Aluno(props) {
   }
 
   function sendFoto() {
+    const input = document.querySelector('.input');
     input.addEventListener("change", handleFiles, false);
     input.click();
   }
@@ -171,7 +170,7 @@ export default function Aluno(props) {
         <h1>{id ? "Editar aluno" : "Cadastrar aluno"}</h1>
 
         <div className="main">
-            { foto ? <img className="userIcon" src={`http://127.0.0.1:8887/${foto.filename}`}></img>: <FaUserCircle className="userIcon"/>}
+            { foto ? <img className="userIcon" src={`http://127.0.0.1:8887/${foto.filename}`}></img> : <FaUserCircle className="userIcon"/>}
             <GrUploadOption className="addIcon" onClick={sendFoto}/>
             <input type="file" accept="image/png, image/jpeg" className="input"></input>
         </div>
