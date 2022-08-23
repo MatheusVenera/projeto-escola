@@ -18,3 +18,24 @@ export function cadastroAlunoFailure(payload) {
         payload
     }
 }
+
+export function updateAlunoRequest(payload) {
+    return {
+        type: types.UPDATE_ALUNO_REQUEST,
+        payload
+    }
+}
+
+export function updateAlunoSuccess(payload) {
+    return {
+        type: types.UPDATE_ALUNO_SUCCESS,
+        payload
+    }
+}
+
+export function updateAlunoFailure(payload) {
+    return {
+        type: types.UPDATE_ALUNO_FAILURE,
+        payload
+    }
+}

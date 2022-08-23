@@ -3,6 +3,8 @@ import multerConfig from '../config/multerConfig';
 import appConfig from '../config/appConfig';
 import Foto from '../models/Foto';
 
+const fs = require('fs');
+
 const upload = multer(multerConfig).single('foto');
 
 class FotoController {
@@ -17,7 +19,11 @@ class FotoController {
         if (req.file) {
           const { originalname, filename } = req.file;
           const { aluno_id } = req.body;
-          console.log(aluno_id);
+          const databaseFoto = await Foto.findOne({ where: { aluno_id: aluno_id } });
+          if (databaseFoto) {
+            await Foto.destroy({ where: {aluno_id: aluno_id } })
+            fs.unlinkSync(databaseFoto.url);
+          }
           const url = `${appConfig.url}/${filename}`.replace(/\\/g, '/');
           const foto = await Foto.create({
             originalname, filename, aluno_id, url,

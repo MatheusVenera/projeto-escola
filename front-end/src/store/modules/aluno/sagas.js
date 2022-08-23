@@ -52,5 +52,52 @@ function* cadastroAlunoRequest({ payload }) {
     }
 }
 
+function* updateAlunoRequest({ payload }) {
+    const toastEnviando = toast.loading("Enviando dados...");
+    try {
+        const response = yield call(axios.put, `/alunos/updateAluno/${payload.id}`, payload);
+        if (payload.foto) {
+            yield call(axios.post, `/fotos/save`, ({aluno_id: response.data.id, foto: payload.foto}), {headers: {'Content-Type': 'multipart/form-data'}});
+        }
+        yield put(actions.updateAlunoSuccess({ ...response.data }))
+        toast.update(toastEnviando, {
+            render: "Atualização realizada com sucesso!",
+            type: "success",
+            isLoading: false,
+            closeButton: true,
+            closeOnClick: true,
+            draggable: true,
+            autoClose: 3000,
+        });
+        history.push(payload.prevPath);
+    } catch (e) {
+        yield put(actions.updateAlunoFailure({}))
+        const errors = get(e, "response.data.errors", []);
+        if (errors.length > 0) {
+            errors.map((err) => {
+                toast.update(toastEnviando, {
+                    render: `${err}`,
+                    type: "error",
+                    isLoading: false,
+                    closeButton: true,
+                    closeOnClick: true,
+                    draggable: true,
+                    autoClose: 3000,
+                });
+            });
+        } else {
+            toast.update(toastEnviando, {
+                render: `Um arro aconteceu ao atualizar o cadastro do aluno :/ ${e.response.status} ${e.response.statusText}`,
+                type: "error",
+                isLoading: false,
+                closeButton: true,
+                closeOnClick: true,
+                autoClose: 3000,
+            });
+        }
+    }
+}
+
 export default all([
-    takeLatest(types.CADASTRO_ALUNO_REQUEST, cadastroAlunoRequest)]);
+    takeLatest(types.CADASTRO_ALUNO_REQUEST, cadastroAlunoRequest),
+    takeLatest(types.UPDATE_ALUNO_REQUEST, updateAlunoRequest)]);

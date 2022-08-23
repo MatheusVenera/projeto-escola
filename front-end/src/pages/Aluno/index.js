@@ -119,18 +119,16 @@ export default function Aluno(props) {
       return;
     } else {
       if (id) {
-        console.log('update')
+        dispatch(actions.updateAlunoRequest({ nome, email, sobrenome, idade, peso, altura, id, foto, prevPath }));
       } else {
-        dispatch(actions.cadastroAlunoRequest({ nome, email, sobrenome, idade, peso, altura, id, foto, prevPath}))
+        dispatch(actions.cadastroAlunoRequest({ nome, email, sobrenome, idade, peso, altura, id, foto, prevPath }))
       }
     }
   }
 
   function validateInputs() {
-    if(!id) {
-      if(nome === "" || sobrenome === "" || email === "" || idade === "" || peso === "" || altura === "") {
-        formErrors.push("Todos os campos precisam ser preenchidos!")
-      }
+    if(nome === "" || sobrenome === "" || email === "" || idade === "" || peso === "" || altura === "") {
+      formErrors.push("Todos os campos precisam ser preenchidos!")
     }
     if (email) {
       if (!isEmail(email)) {

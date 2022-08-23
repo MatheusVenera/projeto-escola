@@ -1,5 +1,8 @@
+import appConfig from '../config/appConfig';
 import Aluno from '../models/Aluno';
 import Foto from '../models/Foto';
+
+const fs = require('fs');
 
 class AlunoController {
   async createAluno(req, res) {
@@ -101,7 +104,7 @@ class AlunoController {
       const { id } = req.params;
       if (!id) {
         return res.status(400).json({
-          errors: ['Você precisa informar o ID ou o Email do aluno'],
+          errors: ['Você precisa informar o ID do aluno'],
         });
       }
       const aluno = await Aluno.findByPk(id);
@@ -110,6 +113,8 @@ class AlunoController {
           errors: ['Aluno não encontrado'],
         });
       }
+      const foto = await Foto.findOne({ where: { aluno_id: id } });
+      fs.unlinkSync(foto.url);
       await aluno.destroy();
       return res.status(200).json('Aluno excluído com sucesso');
     } catch (e) {

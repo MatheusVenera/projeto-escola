@@ -224,7 +224,7 @@ export default function TableAluno() {
         return (
             <>
             <h1><FiUserX size={32}/> Nenhum aluno cadastrado</h1>
-            <Link to={`/aluno/createAluno`}><FaPlusCircle size={32} /></Link>
+            <Link to={`/aluno/`}><FaPlusCircle size={32} /></Link>
             </>
         )
     } else if (alunos[0] !== '') {
